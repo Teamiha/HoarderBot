@@ -4,7 +4,6 @@ import { ADMIN_ID } from "../token.ts";
 
 export async function botStart(ctx: MyContext) {
   const userId = ctx.from?.id;
-  const userName = ctx.from?.username;
 
   if (userId) {
     if (userId === Number(ADMIN_ID)) {

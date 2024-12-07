@@ -1,9 +1,16 @@
 import { Bot, Context, session, SessionFlavor } from "@grammyjs/bot";
-import { ADMIN_ID, BOT_TOKEN } from "./token.ts";
+import { BOT_TOKEN } from "./token.ts";
 import { notificationMatch } from "./botModules/listeningWhispers.ts";
 import { botStart } from "./botModules/botStart.ts";
-import { keyWordsKeyboard, generateListKeyWordsKeyboard } from "./botStatic/keyboard.ts";
-import { addKeyWord, deleteKeyWordById, transferKeyWords, transferKeyWordsForSearch } from "./botKeyWordsDB.ts";
+import {
+  generateListKeyWordsKeyboard,
+  keyWordsKeyboard,
+} from "./botStatic/keyboard.ts";
+import {
+  addKeyWord,
+  deleteKeyWordById,
+  transferKeyWordsForSearch,
+} from "./botKeyWordsDB.ts";
 
 // import { }
 
@@ -42,30 +49,28 @@ function containsKeywords(text: string, keywords: string[]): boolean {
 // Обработчик новых сообщений
 bot.on("message:text", async (ctx) => {
   if (ctx.chat.type === "group" || ctx.chat.type === "supergroup") {
-  const messageText = ctx.message.text;
-  const messageId = ctx.message.message_id;
-  const chatId = ctx.chat.id;
+    const messageText = ctx.message.text;
+    const messageId = ctx.message.message_id;
+    const chatId = ctx.chat.id;
 
-  const keywords = await transferKeyWordsForSearch();
+    const keywords = await transferKeyWordsForSearch();
 
-  if (containsKeywords(messageText, keywords)) {
-    await notificationMatch(ctx, messageText, chatId, messageId);
-    }
-  }
-});
-
-bot.on("message:text", async (ctx) => {
-  if (ctx.chat.type === "private") {
+    if (containsKeywords(messageText, keywords)) {
+      await notificationMatch(ctx, messageText, chatId, messageId);
+    } 
+  } else if (ctx.chat.type === "private") {
     if (ctx.session.stage === "addKeyWord") {
       const keyWordText = ctx.message.text;
-      ctx.session.stage = "null";
+      console.log(keyWordText);
       await addKeyWord(keyWordText);
+      ctx.session.stage = "null";
       await ctx.reply("Ключевое слово добавлено. Выберите действие:", {
         reply_markup: keyWordsKeyboard,
       });
     }
   }
 });
+
 
 bot.callbackQuery(/^keyWord_/, async (ctx) => {
   await ctx.answerCallbackQuery();
@@ -74,10 +79,11 @@ bot.callbackQuery(/^keyWord_/, async (ctx) => {
 
   if (previousMessage?.includes("для удаления")) {
     await deleteKeyWordById(keyWordId);
-    await ctx.reply(`Ключевое слово успешно удалено.`);
+    await ctx.reply("Ключевое слово удалено. Выберите действие:", {
+      reply_markup: keyWordsKeyboard,
+    });
   }
 });
-
 
 bot.callbackQuery("keyWords", async (ctx) => {
   await ctx.answerCallbackQuery();
