@@ -13,13 +13,11 @@ export async function addKeyWord(keyWordText: string): Promise<void> {
     id: keyWordId,
   };
   await kv.set(["hoarderBot", "keyWords", keyWordId], keyWord);
-  console.log("Ключевое слово успешно добавлено");
 }
 
 export async function deleteKeyWordById(keyWordId: string): Promise<void> {
   const kv = await getKv();
   await kv.delete(["hoarderBot", "keyWords", keyWordId]);
-  console.log("Ключевое слово успешно удалено");
 }
 
 async function getKeyWords(): Promise<KeyWord[]> {
