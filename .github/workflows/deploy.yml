@@ -20,5 +20,5 @@ jobs:
       - name: Deploy to Deno Deploy
         uses: denoland/deployctl@v1
         with:
-          project: "mikhail-inspiration-12"
+          project: "mikhail-hoarderbot-10"
           entrypoint: "main.ts"
