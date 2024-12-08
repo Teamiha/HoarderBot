@@ -1,6 +1,6 @@
 import { MyContext } from "../bot.ts";
 import { startKeyboard } from "../botStatic/keyboard.ts";
-import { ADMIN_ID } from "../token.ts";
+import { ADMIN_ID } from "../config.ts";
 
 export async function botStart(ctx: MyContext) {
   const userId = ctx.from?.id;

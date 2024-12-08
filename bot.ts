@@ -1,5 +1,5 @@
 import { Bot, Context, session, SessionFlavor } from "@grammyjs/bot";
-import { BOT_TOKEN } from "./token.ts";
+import { BOT_TOKEN } from "./config.ts";
 import { notificationMatch } from "./botModules/listeningWhispers.ts";
 import { botStart } from "./botModules/botStart.ts";
 import {
@@ -12,7 +12,6 @@ import {
   transferKeyWordsForSearch,
 } from "./botKeyWordsDB.ts";
 
-// import { }
 
 export interface SessionData {
   stage:
@@ -112,4 +111,6 @@ bot.callbackQuery("viewKeyWords", async (ctx) => {
   await ctx.reply("Список ключевых слов:\n\n" + keywords.join("\n"));
 });
 
-bot.start();
+// bot.start();
+export { bot };
+

@@ -1,5 +1,6 @@
 import { MyContext } from "../bot.ts";
-import { ADMIN_ID } from "../token.ts";
+import { ADMIN_ID } from "../config.ts";
+
 export async function notificationMatch(
   ctx: MyContext,
   messageText: string,
